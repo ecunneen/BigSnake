@@ -1,0 +1,32 @@
+
+import processing.serial.*;
+
+Serial myPort;  // Create object from Serial class
+int val;      // Data received from the serial port
+PImage imgOne;
+PImage imgTwo;
+
+void setup() 
+{
+  size(2560, 1600);
+  printArray(Serial.list());
+  String portName = Serial.list()[3]; //Connect to my arduino
+  myPort = new Serial(this, portName, 9600);
+  imgOne = loadImage("amazonOrder.png"); //Alias the image loading to call it later.
+  imgTwo = loadImage("blackround.jpg"); //blank screen image
+}
+
+void draw()
+{
+  background (0);
+  if ( myPort.available() > 0) {  // If data is available,
+    val = myPort.read();         // read it and store it in val
+  }
+  
+  if (val == 0) {              // If the serial value is 0,
+     image(imgTwo, 0, 0);
+  } 
+  else {                       // If the serial value is not 0,
+  image(imgOne, 0, 0);
+  }
+}
